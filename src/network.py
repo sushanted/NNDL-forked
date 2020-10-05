@@ -18,7 +18,7 @@ import numpy as np
 
 class Network(object):
 
-    def __init__(self, sizes):
+    def __init__(self, sizes,evaluation_function=None):
         """The list ``sizes`` contains the number of neurons in the
         respective layers of the network.  For example, if the list
         was [2, 3, 1] then it would be a three-layer network, with the
@@ -34,6 +34,8 @@ class Network(object):
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
         self.weights = [np.random.randn(y, x)
                         for x, y in zip(sizes[:-1], sizes[1:])]
+        if(evaluation_function):
+            self.evaluate = evaluation_function
 
     def feedforward(self, a):
         """Return the output of the network if ``a`` is input."""
@@ -62,7 +64,7 @@ class Network(object):
                 self.update_mini_batch(mini_batch, eta)
             if test_data:
                 print "Epoch {0}: {1} / {2}".format(
-                    j, self.evaluate(test_data), n_test)
+                    j, self.evaluate(test_data,self.feedforward), n_test)
             else:
                 print "Epoch {0} complete".format(j)
 
@@ -117,12 +119,12 @@ class Network(object):
             nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
         return (nabla_b, nabla_w)
 
-    def evaluate(self, test_data):
+    def evaluate(self, test_data,feedforwarder):
         """Return the number of test inputs for which the neural
         network outputs the correct result. Note that the neural
         network's output is assumed to be the index of whichever
         neuron in the final layer has the highest activation."""
-        test_results = [(np.argmax(self.feedforward(x)), y)
+        test_results = [(np.argmax(feedforwarder(x)), y)
                         for (x, y) in test_data]
         return sum(int(x == y) for (x, y) in test_results)
 

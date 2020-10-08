@@ -16,6 +16,8 @@ import random
 # Third-party libraries
 import numpy as np
 
+from study.utils import learning_recorder
+
 class Network(object):
 
     def __init__(self, sizes,evaluation_function=None):
@@ -43,6 +45,17 @@ class Network(object):
             a = sigmoid(np.dot(w, a)+b)
         return a
 
+    def train(self, filename,training_data, epochs, mini_batch_size, eta,
+            test_data=None):
+        result = self.SGD(training_data, epochs, mini_batch_size, eta,
+            test_data)
+        learning_recorder.record(filename,dict(
+                    network=self.sizes,
+                    epochs=epochs,
+                    mini_batch_size=mini_batch_size,
+                    eta=eta,
+                    result=result))
+
     def SGD(self, training_data, epochs, mini_batch_size, eta,
             test_data=None):
         """Train the neural network using mini-batch stochastic
@@ -55,6 +68,9 @@ class Network(object):
         tracking progress, but slows things down substantially."""
         if test_data: n_test = len(test_data)
         n = len(training_data)
+        final = None
+        min = None
+        max = None
         for j in xrange(epochs):
             random.shuffle(training_data)
             mini_batches = [
@@ -63,10 +79,16 @@ class Network(object):
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta)
             if test_data:
+                result = self.evaluate(test_data, self.feedforward)
+                final = result
+                min = result if not min or min > result else min
+                max = result if not max or max < result else max
                 print "Epoch {0}: {1} / {2}".format(
-                    j, self.evaluate(test_data,self.feedforward), n_test)
+                    j, result, n_test)
             else:
                 print "Epoch {0} complete".format(j)
+
+        return min,max,final
 
     def update_mini_batch(self, mini_batch, eta):
         """Update the network's weights and biases by applying

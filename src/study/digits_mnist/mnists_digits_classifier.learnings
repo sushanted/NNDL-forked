@@ -1,0 +1,5 @@
+{"record": {"epochs": 10, "mini_batch_size": 100, "network": [784, 30, 10], "eta": 5.0}}
+{"record": {"epochs": 4, "network": [784, 30, 10], "mini_batch_size": 100, "result": 6391, "eta": 3.0}}
+{"epochs": 4, "network": [784, 30, 10], "mini_batch_size": 100, "result": [4877, 6157, 6157], "eta": 3.0}
+{"epochs": 4, "network": [784, 30, 10], "mini_batch_size": 100, "result": [4003, 5762, 5762], "eta": 3.0}
+{"epochs": 100, "network": [784, 30, 10], "mini_batch_size": 100, "result": [1347, 8627, 8627], "eta": 0.1}

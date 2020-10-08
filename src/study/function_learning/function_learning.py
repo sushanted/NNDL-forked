@@ -1,12 +1,11 @@
 # A network learning provided function
-import sys
-sys.path.append('../../')
+
 
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
-import network
+from src import network
 import numpy as np
 
 # z = 3x+4y

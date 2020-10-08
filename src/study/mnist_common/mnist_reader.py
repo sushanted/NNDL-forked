@@ -1,3 +1,5 @@
+import numpy as np
+
 def load_mnist(path, kind='train'):
     import os
     import gzip
@@ -20,3 +22,18 @@ def load_mnist(path, kind='train'):
                                offset=16).reshape(len(labels), 784)
 
     return images, labels
+
+def get_label_array(label):
+    label_array = np.zeros(10)
+    label_array[label] = 1.0
+    return label_array.reshape((10,1))
+
+def load():
+    training_images, training_labels = load_mnist("data", "train")
+    test_images, test_labels = load_mnist("data", "t10k")
+
+    training_data = [(image.reshape(784, 1), get_label_array(label)) for image, label in
+                     zip(training_images, training_labels)]
+    test_data = [(image.reshape(784, 1), label) for image, label in zip(test_images, test_labels)]
+
+    return training_data,test_data

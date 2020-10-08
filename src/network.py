@@ -17,6 +17,7 @@ import random
 import numpy as np
 
 from study.utils import learning_recorder
+from study.utils import learning_plotter
 
 class Network(object):
 
@@ -38,6 +39,7 @@ class Network(object):
                         for x, y in zip(sizes[:-1], sizes[1:])]
         if(evaluation_function):
             self.evaluate = evaluation_function
+        self.evaluate = learning_plotter.plotter(self.evaluate)
 
     def feedforward(self, a):
         """Return the output of the network if ``a`` is input."""

@@ -1,10 +1,5 @@
 # A network learning provided function
 
-
-import matplotlib
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
-
 from src import network
 import numpy as np
 
@@ -20,7 +15,7 @@ def evaluation_function(test_tuples,feedforwarder):
 
     current_cost = sum([ abs(feedforwarder(input)-expected) for (input,expected) in test_tuples ])
     cost.append(current_cost[0][0])
-    return current_cost
+    return current_cost[0][0]
 
 
 def generate_data(test):
@@ -56,14 +51,13 @@ def train_model():
 
     print("Training model: ")
 
-    net.SGD(training_data, 100, 30,1.0, test_data=test_data)
+    net.train("function_learning.learnings",training_data, epochs=20, mini_batch_size=3,eta=15.0, test_data=test_data)
 
     return net
 
 def evaluate(net):
 
-    plt.plot(cost)
-    plt.show()
+
     cross_check_data_set = generate_data(True)
 
     for cross_check_data in cross_check_data_set:

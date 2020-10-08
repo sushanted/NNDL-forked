@@ -1,8 +1,5 @@
 
-import sys
-sys.path.append('../../')
-
-import network
+from src import network
 import numpy as np
 import shutil,os
 

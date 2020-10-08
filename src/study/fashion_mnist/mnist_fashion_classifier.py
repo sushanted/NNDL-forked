@@ -1,7 +1,4 @@
 
-import matplotlib
-matplotlib.use('TkAgg')
-
 from src import network
 import numpy as np
 
@@ -32,11 +29,8 @@ def train_model():
 
     training_data,test_data = mnist_reader.load()
 
-    net.train("mnists_fashion_classifier.learnings", training_data, epochs=200, mini_batch_size=100, eta=0.05,
+    net.train("mnists_fashion_classifier.learnings", training_data, epochs=70, mini_batch_size=4, eta=0.01,
               test_data=test_data)
-
-    #[784,30,10] : 40,10,0.1 : 57.36, 62.22
-    #[784,30,10] : 40,10,0.01 : 58.59
 
     return net
 
@@ -53,15 +47,3 @@ def evaluate(net):
         print_result(np.argmax(net.feedforward(test_sample[0])),test_sample[1])
 
 evaluate(train_model())
-
-
-
-
-
-
-
-
-
-
-
-

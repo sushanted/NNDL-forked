@@ -1,11 +1,5 @@
-import sys
-sys.path.append('../../')
 
-import matplotlib
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
-
-import network
+from src import network
 import numpy as np
 import string
 
@@ -13,19 +7,10 @@ word_length = 12
 word_file_name = "data/word_var_len.txt"
 number_of_words = 10000
 
-cost =[]
-index = 0
-
-#for i in range(30):
-#    print(''.join(np.random.choice(list(string.ascii_lowercase),(np.random.randint(5,11)))))
-
 def evaluation_function(test_tuples,feedforwarder):
 
     current_cost = sum([ abs(feedforwarder(input)-expected) for (input,expected) in test_tuples ])
-    cost.append(sum(current_cost)) # false positive + false negative
-    plt.plot(cost)
-    plt.pause(0.05)
-    return current_cost
+    return current_cost[0][0]
 
 def train_model():
     net = network.Network([12,100,100,100,1],evaluation_function)
@@ -39,11 +24,14 @@ def train_model():
 
     np.random.shuffle(test_tuples)
 
-    #print(len(test_tuples))
 
-    #print(test_tuples)
-
-    net.SGD(test_tuples[:number_of_words], epochs=100, mini_batch_size=100, eta=0.5, test_data=test_tuples[number_of_words:])
+    net.train("sensible_word_detector_var_len.learnings",
+              test_tuples[:number_of_words],
+              epochs=100,
+              mini_batch_size=5,
+              eta=1.0,
+              test_data=test_tuples[number_of_words:]
+              )
 
     return net
 

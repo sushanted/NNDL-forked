@@ -8,6 +8,8 @@ from PIL import Image, ImageDraw
 max_width = 28
 max_height = 28
 
+labels = ['ellipse', 'rectangle', 'line']
+
 def get_bounds():
 
 
@@ -85,9 +87,6 @@ def generate_data(test):
     list = []
     for i in range(0, 10000):
 
-        #Image.fromarray(np.uint8(image), 'L').save('data/image_r_' + str(i) + '.png')
-
-        #Image.fromarray(np.uint8(image), 'L').save('data/image_n_' + str(i) + '.png')
         list.append(get_data_tuple(test,get_ellipse_image(), [1, 0, 0]))
         list.append(get_data_tuple(test,get_rect_image(),[0,1,0]))
         list.append(get_data_tuple(test,get_line_image(),[0,0,1]))
@@ -116,19 +115,28 @@ def train_model():
 
     print("Training model: ")
 
-    net.SGD(training_data, 20, 10, 2.5, test_data=test_data)
+    net.train("figure_detector.learnings",
+              training_data,
+              epochs = 100,
+              mini_batch_size=5,
+              eta=0.07,
+              test_data=test_data)
 
     return net
 
-def evaluate(net):
+def create_dirs():
 
-    labels = ['ellipse','rectangle','line']
+    if os.path.exists('data/fixed_figures'):
+        shutil.rmtree('data/fixed_figures')
 
-    shutil.rmtree('data/fixed_figures')
-    os.mkdir('data/fixed_figures')
+    os.makedirs('data/fixed_figures')
 
     for label in labels:
-        os.mkdir('data/fixed_figures/'+label)
+        os.mkdir('data/fixed_figures/' + label)
+
+def evaluate(net):
+
+    create_dirs()
 
     cross_check_data_set = generate_data(True)
     i=0
@@ -137,7 +145,7 @@ def evaluate(net):
         feedforward = net.feedforward(cross_check_data[0])
         argmax = np.argmax(feedforward)
         label = labels[argmax]
-        print(str(feedforward[argmax]))
+        # print(str(feedforward[argmax]))
         image = cross_check_data[0]
         image.shape = (28,28)
         Image.fromarray(np.uint8(image), 'L').save('data/fixed_figures/'+label+'/image' + str(i)+"_"+str(int(feedforward[argmax]*100000))+'.png')

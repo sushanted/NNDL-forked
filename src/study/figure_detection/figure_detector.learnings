@@ -1,0 +1,6 @@
+{"epochs": 20, "network": [784, 30, 3], "mini_batch_size": 10, "result": [20544, 24735, 24735], "eta": 2.5}
+{"epochs": 20, "network": [784, 30, 3], "mini_batch_size": 10, "result": [20772, 25192, 25180], "eta": 2.5}
+{"epochs": 10, "network": [784, 30, 3], "mini_batch_size": 5, "result": [22032, 25416, 25115], "eta": 1.0}
+{"epochs": 100, "network": [784, 30, 3], "mini_batch_size": 5, "result": [21828, 25631, 25567], "eta": 1.0}
+{"epochs": 50, "network": [784, 30, 3], "mini_batch_size": 5, "result": [21289, 29077, 29043], "eta": 0.1}
+{"epochs": 100, "network": [784, 30, 3], "mini_batch_size": 5, "result": [21050, 29549, 29549], "eta": 0.07}

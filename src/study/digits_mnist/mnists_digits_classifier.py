@@ -26,7 +26,7 @@ def train_model():
 
     training_data,test_data = mnist_reader.load()
 
-    net.train("mnists_digits_classifier.learnings",training_data, epochs=100, mini_batch_size=100, eta=0.1,
+    net.train("mnists_digits_classifier.learnings",training_data, epochs=100, mini_batch_size=10, eta=0.05,
             test_data=test_data)
 
     # [784,30,10] : 30,10,0.1 : 75.05

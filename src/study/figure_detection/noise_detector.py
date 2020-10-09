@@ -1,12 +1,18 @@
 
 
-import network
+from src import network
 import numpy as np
+import os
+import shutil
 
 from PIL import Image, ImageFilter
 
 max_width = 28
 max_height = 28
+
+labels = ['noise','rectangle']
+
+data_dir = 'data/noise_vs_figure'
 
 def get_rect_image():
     img = np.zeros((max_width,max_height),int)
@@ -39,9 +45,6 @@ def generate_data(test):
     list = []
     for i in range(0, 10000):
 
-        #Image.fromarray(np.uint8(image), 'L').save('data/image_r_' + str(i) + '.png')
-
-        #Image.fromarray(np.uint8(image), 'L').save('data/image_n_' + str(i) + '.png')
         list.append(get_data_tuple(test,get_rect_image(),[0,1]))
         list.append(get_data_tuple(test,get_noise_image(),[1,0]))
 
@@ -69,21 +72,38 @@ def train_model():
 
     print("Training model: ")
 
-    net.SGD(training_data, 20, 12, 2.5, test_data=test_data)
+    net.train("noise_detector.learnings",
+              training_data,
+              epochs=100,
+              mini_batch_size=5,
+              eta=0.5,
+              test_data=test_data)
 
     return net
 
+def create_dirs():
+
+    if os.path.exists(data_dir):
+        shutil.rmtree(data_dir)
+
+    os.makedirs(data_dir)
+
+    for label in labels:
+        os.mkdir(data_dir + '/' + label)
+
 def evaluate(net):
+
+    create_dirs()
 
     cross_check_data_set = generate_data(True)
     i = 0
     for cross_check_data in cross_check_data_set:
         i += 1
         feedforward = net.feedforward(cross_check_data[0])
-        label = ['noise','rectangle'][np.argmax(feedforward)]
+        label = labels[np.argmax(feedforward)]
         image = cross_check_data[0]
         image.shape = (28,28)
-        Image.fromarray(np.uint8(image), 'L').save('data/'+label+'/image' + str(i) + '.png')
+        Image.fromarray(np.uint8(image), 'L').save(data_dir+'/'+label+'/image' + str(i) + '.png')
 
 
 

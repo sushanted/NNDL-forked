@@ -6,12 +6,19 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
-min,max,final = None,None,None
-for i in [3,1,4,1,6,7,9,2]:
-    min = i if not min or min > i else min
-    max = i if not max or max < i else max
-    final = i
-print(min,max,final)
+import os,shutil
+
+
+
+labels = ['ellipse','rectangle','line']
+
+if os.path.exists('data/fixed_figures'):
+    shutil.rmtree('data/fixed_figures')
+
+os.makedirs('data/fixed_figures')
+
+for label in labels:
+    os.mkdir('data/fixed_figures/'+label)
 
 
 def meth():

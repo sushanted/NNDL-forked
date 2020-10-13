@@ -9,16 +9,23 @@ import matplotlib.pyplot as plt
 import os,shutil
 
 
+arr = np.array([1,2,3])
 
-labels = ['ellipse','rectangle','line']
+arr = np.append(arr,[4,5,6])
 
-if os.path.exists('data/fixed_figures'):
-    shutil.rmtree('data/fixed_figures')
+print(arr.reshape((-1,1)))
 
-os.makedirs('data/fixed_figures')
 
-for label in labels:
-    os.mkdir('data/fixed_figures/'+label)
+def m2():
+    labels = ['ellipse','rectangle','line']
+
+    if os.path.exists('data/fixed_figures'):
+        shutil.rmtree('data/fixed_figures')
+
+    os.makedirs('data/fixed_figures')
+
+    for label in labels:
+        os.mkdir('data/fixed_figures/'+label)
 
 
 def meth():

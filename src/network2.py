@@ -20,6 +20,9 @@ import sys
 # Third-party libraries
 import numpy as np
 
+from study.utils import learning_recorder
+from study.utils import learning_plotter
+
 
 #### Define the quadratic and cross-entropy cost functions
 
@@ -125,6 +128,17 @@ class Network(object):
         for b, w in zip(self.biases, self.weights):
             a = sigmoid(np.dot(w, a)+b)
         return a
+
+    def train(self, filename,training_data, epochs, mini_batch_size, eta,
+            test_data=None):
+        result = self.SGD(training_data=training_data, epochs=epochs, mini_batch_size=mini_batch_size, eta=eta,
+            evaluation_data=test_data,monitor_evaluation_accuracy=True)[1]
+        learning_recorder.record(filename,dict(
+                    network=self.sizes,
+                    epochs=epochs,
+                    mini_batch_size=mini_batch_size,
+                    eta=eta,
+                    result=[min(result),max(result),result[-1]]))
 
     def SGD(self, training_data, epochs, mini_batch_size, eta,
             lmbda = 0.0,

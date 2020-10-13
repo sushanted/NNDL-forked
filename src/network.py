@@ -49,8 +49,8 @@ class Network(object):
 
     def train(self, filename,training_data, epochs, mini_batch_size, eta,
             test_data=None):
-        result = self.SGD(training_data, epochs, mini_batch_size, eta,
-            test_data)
+        result = self.SGD(training_data=training_data, epochs=epochs, mini_batch_size=mini_batch_size, eta=eta,
+            test_data=test_data)
         learning_recorder.record(filename,dict(
                     network=self.sizes,
                     epochs=epochs,

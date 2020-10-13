@@ -34,4 +34,5 @@ def evaluate(net):
     for test_sample in test_data[9000:]:
         print_result(np.argmax(net.feedforward(test_sample[0])), test_sample[1])
 
-evaluate(train_model())
+if __name__  == "__main__":
+    evaluate(train_model())

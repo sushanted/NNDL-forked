@@ -70,7 +70,7 @@ class CrossEntropyCost(object):
 #### Main Network class
 class Network(object):
 
-    def __init__(self, sizes, cost=CrossEntropyCost):
+    def __init__(self, sizes, cost=CrossEntropyCost,evaluation_function=None):
         """The list ``sizes`` contains the number of neurons in the respective
         layers of the network.  For example, if the list was [2, 3, 1]
         then it would be a three-layer network, with the first layer
@@ -85,6 +85,9 @@ class Network(object):
         self.sizes = sizes
         self.default_weight_initializer()
         self.cost=cost
+        if (evaluation_function):
+            self.accuracy = evaluation_function
+        self.accuracy = learning_plotter.plotter(self.accuracy)
 
     def default_weight_initializer(self):
         """Initialize each weight using a Gaussian distribution with mean 0
@@ -184,7 +187,7 @@ class Network(object):
                 training_cost.append(cost)
                 print "Cost on training data: {}".format(cost)
             if monitor_training_accuracy:
-                accuracy = self.accuracy(training_data, convert=True)
+                accuracy = self.accuracy(training_data, self.feedforward, convert=True)
                 training_accuracy.append(accuracy)
                 print "Accuracy on training data: {} / {}".format(
                     accuracy, n)
@@ -193,10 +196,10 @@ class Network(object):
                 evaluation_cost.append(cost)
                 print "Cost on evaluation data: {}".format(cost)
             if monitor_evaluation_accuracy:
-                accuracy = self.accuracy(evaluation_data)
+                accuracy = self.accuracy(evaluation_data,self.feedforward)
                 evaluation_accuracy.append(accuracy)
                 print "Accuracy on evaluation data: {} / {}".format(
-                    self.accuracy(evaluation_data), n_data)
+                    accuracy, n_data)
             print
         return evaluation_cost, evaluation_accuracy, \
             training_cost, training_accuracy
@@ -254,7 +257,7 @@ class Network(object):
             nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
         return (nabla_b, nabla_w)
 
-    def accuracy(self, data, convert=False):
+    def accuracy(self, data,feedforwarder, convert=False):
         """Return the number of inputs in ``data`` for which the neural
         network outputs the correct result. The neural network's
         output is assumed to be the index of whichever neuron in the
@@ -278,10 +281,10 @@ class Network(object):
 
         """
         if convert:
-            results = [(np.argmax(self.feedforward(x)), np.argmax(y))
+            results = [(np.argmax(feedforwarder(x)), np.argmax(y))
                        for (x, y) in data]
         else:
-            results = [(np.argmax(self.feedforward(x)), y)
+            results = [(np.argmax(feedforwarder(x)), y)
                         for (x, y) in data]
         return sum(int(x == y) for (x, y) in results)
 

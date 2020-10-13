@@ -3,7 +3,6 @@ from src import network
 import numpy as np
 
 from src.study.utils import downloader
-from src.study.utils import learning_recorder as recorder
 from src.study.mnist_common import mnist_reader
 
 items = ["T-shirt/top","Trouser","Pullover","Dress","Coat","Sandal","Shirt","Sneaker","Bag","Ankle","boot"]
@@ -16,12 +15,6 @@ def download_mnist_fashion_data():
                                     "t10k-labels-idx1-ubyte.gz"])
 
 download_mnist_fashion_data()
-
-def get_label_array(label):
-    label_array = np.zeros(10)
-    label_array[label] = 1.0
-    return label_array.reshape((10,1))
-
 
 def train_model():
 
@@ -46,4 +39,5 @@ def evaluate(net):
     for test_sample in test_data[9000:]:
         print_result(np.argmax(net.feedforward(test_sample[0])),test_sample[1])
 
-evaluate(train_model())
+if(__name__ == "__main__"):
+    evaluate(train_model())

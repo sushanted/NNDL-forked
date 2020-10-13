@@ -9,3 +9,4 @@
 {"epochs": 20, "network": [784, 30, 10], "mini_batch_size": 5, "result": [1817, 5482, 5482], "eta": 0.005}
 {"epochs": 50, "network": [784, 30, 10], "mini_batch_size": 5, "result": [3015, 7489, 7410], "eta": 0.01}
 {"epochs": 70, "network": [784, 30, 10], "mini_batch_size": 4, "result": [2740, 7469, 7359], "eta": 0.01}
+{"epochs": 4, "network": [784, 30, 10], "mini_batch_size": 4, "result": [1001, 5698, 5698], "eta": 0.01}

@@ -3,3 +3,8 @@
 {"epochs": 10, "network": [784, 30, 10], "mini_batch_size": 5, "result": [8095, 8967, 8967], "eta": 0.001}
 {"epochs": 30, "network": [784, 30, 10], "mini_batch_size": 10, "result": [7485, 9173, 9173], "eta": 0.001}
 {"epochs": 70, "network": [784, 30, 10], "mini_batch_size": 10, "result": [7950, 9264, 9264], "eta": 0.001}
+{"epochs": 70, "network": [784, 30, 10], "mini_batch_size": 10, "result": [3187, 9021, 9014], "eta": 0.0001}
+{"epochs": 70, "network": [784, 30, 10], "mini_batch_size": 5, "result": [7810, 9223, 9188], "eta": 0.0005}
+{"epochs": 70, "network": [784, 30, 10], "mini_batch_size": 5, "result": [6135, 8658, 8280], "eta": 0.01}
+{"epochs": 70, "network": [784, 30, 10], "mini_batch_size": 10, "result": [7473, 8961, 8781], "eta": 0.01}
+{"epochs": 7, "network": [784, 30, 10], "mini_batch_size": 10, "result": [7605, 8473, 8473], "eta": 0.01}

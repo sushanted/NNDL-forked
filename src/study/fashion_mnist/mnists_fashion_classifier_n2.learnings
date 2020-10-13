@@ -1,0 +1,4 @@
+{"epochs": 30, "network": [784, 30, 10], "mini_batch_size": 10, "result": [6833, 8058, 8038], "eta": 0.001}
+{"epochs": 50, "network": [784, 30, 10], "mini_batch_size": 10, "result": [6481, 8044, 7550], "eta": 0.001}
+{"epochs": 80, "network": [784, 30, 10], "mini_batch_size": 10, "result": [2436, 8193, 8099], "eta": 0.0001}
+{"epochs": 100, "network": [784, 30, 10], "mini_batch_size": 10, "result": [3036, 8268, 8204], "eta": 0.0001}

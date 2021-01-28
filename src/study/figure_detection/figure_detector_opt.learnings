@@ -1,0 +1,10 @@
+{"epochs": 100, "eta": 0.07, "network": [784, 30, 3], "lmbda": 0.0, "mini_batch_size": 5, "result": [23675, 27332, 26584]}
+{"epochs": 30, "eta": 0.001, "network": [784, 30, 3], "lmbda": 0.0, "mini_batch_size": 5, "result": [28029, 29986, 29986]}
+left = np.random.randint(0, 13)
+top = np.random.randint(0, 13)
+right = np.random.randint(max_width - 13, max_width - 1)
+bottom = np.random.randint(max_height - 13, max_height - 1)
+{"epochs": 30, "eta": 0.001, "network": [784, 30, 3], "lmbda": 0.0, "mini_batch_size": 5, "result": [23957, 29896, 29895]}
+{"epochs": 30, "eta": 0.001, "network": [784, 30, 3], "lmbda": 0.1, "mini_batch_size": 5, "result": [23954, 29904, 29899]}
+{"epochs": 10, "eta": 0.001, "network": [784, 30, 3], "lmbda": 0.1, "mini_batch_size": 5, "result": [23053, 29585, 29585]}
+{"epochs": 40, "eta": 0.001, "network": [784, 30, 3], "lmbda": 0.1, "mini_batch_size": 5, "result": [23984, 29891, 29884]}

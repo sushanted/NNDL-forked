@@ -15,15 +15,7 @@ def evaluation_function(test_tuples,feedforwarder):
 def train_model():
     net = network.Network([12,100,100,100,1],evaluation_function)
 
-    test_tuples = []
-    with open(word_file_name) as word_file:
-        test_tuples=([(get_vector(word),np.array([[1]])) for word in word_file.readlines()[:number_of_words]])
-
-    sensible_words = len(test_tuples)
-    [test_tuples.append((get_vector(get_random_word()), np.array([[0]]))) for i in range(sensible_words)]
-
-    np.random.shuffle(test_tuples)
-
+    test_tuples = get_test_tuples()
 
     net.train("sensible_word_detector_var_len.learnings",
               test_tuples[:number_of_words],
@@ -34,6 +26,16 @@ def train_model():
               )
 
     return net
+
+
+def get_test_tuples():
+    test_tuples = []
+    with open(word_file_name) as word_file:
+        test_tuples = ([(get_vector(word), np.array([[1]])) for word in word_file.readlines()[:number_of_words]])
+    sensible_words = len(test_tuples)
+    [test_tuples.append((get_vector(get_random_word()), np.array([[0]]))) for i in range(sensible_words)]
+    np.random.shuffle(test_tuples)
+    return test_tuples
 
 
 def get_random_word():
@@ -67,7 +69,8 @@ def evaluate(net):
     with open(word_file_name) as word_file:
         evaluate_list(net, word_file.readlines(), lambda prob: prob < 0.55)
 
-evaluate(train_model())
+if __name__ == "__main__":
+    evaluate(train_model())
 
 
 

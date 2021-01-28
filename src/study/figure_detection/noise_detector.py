@@ -101,10 +101,11 @@ def evaluate(net):
         i += 1
         feedforward = net.feedforward(cross_check_data[0])
         label = labels[np.argmax(feedforward)]
-        image = cross_check_data[0]
-        image.shape = (28,28)
-        Image.fromarray(np.uint8(image), 'L').save(data_dir+'/'+label+'/image' + str(i) + '.png')
+        if np.argmax(feedforward)!=cross_check_data[1]:
+            image = cross_check_data[0]
+            image.shape = (28,28)
+            Image.fromarray(np.uint8(image), 'L').save(data_dir+'/'+label+'/image' + str(i) + '.png')
 
 
-
-evaluate(train_model())
+if __name__ == "__main__":
+    evaluate(train_model())

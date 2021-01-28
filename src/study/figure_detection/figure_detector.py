@@ -13,11 +13,11 @@ labels = ['ellipse', 'rectangle', 'line']
 def get_bounds():
 
 
-    left = np.random.randint(0, 10)
-    top = np.random.randint(0, 10)
+    left = np.random.randint(0, 13)
+    top = np.random.randint(0, 13)
 
-    right = np.random.randint(max_width - 10, max_width - 1)
-    bottom = np.random.randint(max_height - 10, max_height - 1)
+    right = np.random.randint(max_width - 13, max_width - 1)
+    bottom = np.random.randint(max_height - 13, max_height - 1)
 
 
     return (left,top,right,bottom)
@@ -146,11 +146,12 @@ def evaluate(net):
         argmax = np.argmax(feedforward)
         label = labels[argmax]
         # print(str(feedforward[argmax]))
-        image = cross_check_data[0]
-        image.shape = (28,28)
-        Image.fromarray(np.uint8(image), 'L').save('data/fixed_figures/'+label+'/image' + str(i)+"_"+str(int(feedforward[argmax]*100000))+'.png')
+        if(argmax!=cross_check_data[1]):
+            image = cross_check_data[0]
+            image.shape = (28,28)
+            Image.fromarray(np.uint8(image), 'L').save('data/fixed_figures/'+label+'/image' + str(i)+"_"+str(int(feedforward[argmax]*100000))+'.png')
 
 
-
-evaluate(train_model())
+if __name__ == "__main__":
+    evaluate(train_model())
 

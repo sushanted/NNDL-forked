@@ -8,3 +8,11 @@
 {"epochs": 70, "network": [784, 30, 10], "mini_batch_size": 5, "result": [6135, 8658, 8280], "eta": 0.01}
 {"epochs": 70, "network": [784, 30, 10], "mini_batch_size": 10, "result": [7473, 8961, 8781], "eta": 0.01}
 {"epochs": 7, "network": [784, 30, 10], "mini_batch_size": 10, "result": [7605, 8473, 8473], "eta": 0.01}
+{"epochs": 7, "eta": 0.01, "network": [784, 30, 10], "lmbda": 0.1, "mini_batch_size": 10, "result": [7614, 8502, 8492]}
+{"epochs": 50, "eta": 0.01, "network": [784, 30, 10], "lmbda": 0.1, "mini_batch_size": 10, "result": [7865, 8869, 8513]}
+{"epochs": 70, "eta": 0.0005, "network": [784, 30, 10], "lmbda": 0.1, "mini_batch_size": 10, "result": [6768, 9217, 9211]}
+{"epochs": 70, "eta": 0.001, "network": [784, 30, 10], "lmbda": 0.1, "mini_batch_size": 10, "result": [7713, 9299, 9234]}
+{"epochs": 70, "eta": 0.001, "network": [784, 30, 10], "lmbda": 0.5, "mini_batch_size": 10, "result": [7524, 9249, 9213]}
+{"epochs": 70, "eta": 0.001, "network": [784, 30, 10], "lmbda": 0.25, "mini_batch_size": 7, "result": [8105, 9200, 9189]}
+{"epochs": 70, "eta": 0.001, "network": [784, 30, 10], "lmbda": 0.1, "mini_batch_size": 20, "result": [6884, 9230, 9219]}
+{"epochs": 70, "eta": 0.001, "network": [784, 100, 10], "lmbda": 0.1, "mini_batch_size": 10, "result": [8743, 9596, 9588]}

@@ -9,12 +9,9 @@ import numpy as np
 
 funct = lambda x,y : (3*x**3+2*y**2)/4
 
-cost = []
-
 def evaluation_function(test_tuples,feedforwarder):
 
     current_cost = sum([ abs(feedforwarder(input)-expected) for (input,expected) in test_tuples ])
-    cost.append(current_cost[0][0])
     return current_cost[0][0]
 
 
@@ -57,7 +54,6 @@ def train_model():
 
 def evaluate(net):
 
-
     cross_check_data_set = generate_data(True)
 
     for cross_check_data in cross_check_data_set:
@@ -65,5 +61,5 @@ def evaluate(net):
         print(str(cross_check_data)+"\nExpected  : "+str(cross_check_data[1]*7)+"\nActual    : "+str(feedforward[0][0]*7))
 
 
-
-evaluate(train_model())
+if __name__ == "__main__":
+    evaluate(train_model())

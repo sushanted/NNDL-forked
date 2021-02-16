@@ -1,15 +1,5 @@
 import numpy as np
 
-class Turn:
-    def __init__(self,start_symbol='O'):
-        self.turn = start_symbol
-
-    def change(self):
-        self.turn = 'O' if self.turn == 'X' else 'X'
-
-    def current(self):
-        return self.turn
-
 class Board:
     def __init__(self):
         self.cells = np.full((3, 3), '-')
@@ -30,21 +20,13 @@ class Board:
         self.cells[cell] = symbol
         self.empty_cells.remove(cell)
 
-    # TODO check if same as print_board
     def __str__(self):
         str = "\n"
         for row in self.cells:
             for column in row:
                 str = str + column + " "
             str = str +"\n"
-
-    # TODO remove if __str__ works properly
-    def print_board(self):
-        print("")
-        for row in self.cells:
-            for column in row:
-                print(column),
-            print(" ")
+        return str
 
 def get_input():
     inp = input()
@@ -72,9 +54,6 @@ def get_next_input():
     #print(board)"""
 
 
-
-
-
 won_map_O = dict({"OOO":0})
 won_map_X = dict({"XXX":0})
 
@@ -84,8 +63,6 @@ winnable_map_O = dict({"-OO":0, "O-O":1, "OO-":2})
 winnable_map_X = dict({"-XX":0, "X-X":1, "XX-":2})
 
 winnable_maps = dict(O=winnable_map_O, X=winnable_map_X)
-
-
 
 
 def play(game):
@@ -185,14 +162,11 @@ class Game:
 
     def __init__(self,player1,player2,board=Board()):
         self.board = board
-        # TODO remove is not used
-        self.player1 = player1
-        self.player2 = player2
-        # default assignment, the first player will always get an extra chance than the second
-        self.player1.symbol = 'X'
-        self.player2.symbol = 'O'
         self.current_player = player1
         self.another_player = player2
+        # default assignment, the first player will always get an extra chance than the second
+        self.current_player.symbol = 'X'
+        self.another_player.symbol = 'O'
 
     def change_turn(self):
         # swap current and another players
@@ -207,13 +181,14 @@ def play_game(game):
 
         if(play(game)):
             print("GAME OVER")
-            game.board.print_board()
+            print(game.board)
             break
-        game.board.print_board()
+        print(game.board)
         game.change_turn()
 
 # TODO take input the types of two players : Bot, Random, Human
 play_game(Game(BotPlayer(),RandomPlayer()))
+
 
 
 

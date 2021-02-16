@@ -24,7 +24,7 @@ class Board:
                 return corner
 
     def get_random_empty_cell(self):
-        return board.empty_cells[np.random.randint(0, len(board.empty_cells))]
+        return self.empty_cells[np.random.randint(0, len(self.empty_cells))]
 
     def mark_occupied(self,cell,symbol):
         self.cells[cell] = symbol
@@ -66,8 +66,8 @@ def get_next_input():
 
 
 
-won_map_O = dict({"0OO":0,"O0O":1,"OO0":2})
-won_map_X = dict({"XXX":0,"XXX":1,"XXX":2})
+won_map_O = dict({"OOO":0})
+won_map_X = dict({"XXX":0})
 
 won_maps = dict(O=won_map_O, X=won_map_X)
 
@@ -76,6 +76,70 @@ winnable_map_X = dict({"-XX":0, "X-X":1, "XX-":2})
 
 winnable_maps = dict(O=winnable_map_O, X=winnable_map_X)
 
+
+
+
+def play(board,turn,player):
+
+    my_symbol = turn.current()
+
+    # Next is their turn
+    turn.change()
+
+    their_symbol = turn.current()
+
+    print("Turn of:"+my_symbol)
+
+    selected_cell = player.select_next_cell(board,my_symbol, their_symbol)
+
+    # Put the symbol and win
+    if(selected_cell):
+        board.mark_occupied(selected_cell,my_symbol)
+
+    if(get_winning_position(board.cells,won_maps,my_symbol)):
+        print(my_symbol+ " INDEED WON THE GAME!!")
+        return True
+
+    return False
+
+# TODO : use interface
+class Player:
+
+   def select_next_cell(self,board,my_symbol, their_symbol):
+       pass
+
+class RandomPlayer(Player):
+    pass
+
+class BotPlayer(Player):
+
+    def select_next_cell(self,board,my_symbol, their_symbol):
+
+        print("Checking if I can win in this turn")
+        selected_cell = get_winning_position(board.cells,winnable_maps, my_symbol)
+
+        if (not selected_cell):
+            print("Checking if they can win in next turn")
+            selected_cell = get_winning_position(board.cells,winnable_maps, their_symbol)
+            if (selected_cell):
+                print("Blocking them at position : " + str(selected_cell))
+
+        if (not selected_cell):
+            if (board.is_empty((1, 1))):
+                print("Taking central cell")
+                selected_cell = (1, 1)
+            else:
+                selected_cell = board.get_empty_corner()
+                print("Taking corner " + str(selected_cell))
+
+        if (not selected_cell):
+            print("Selecting random cell")
+            selected_cell = board.get_random_empty_cell()
+            print("Random cell " + str(selected_cell))
+
+        return selected_cell
+
+# TODO : can be moved to a separate class
 def get_next_matching_position(pattern_map, cells):
     i = 0
     for row in cells:
@@ -93,91 +157,65 @@ def get_next_matching_diagonal_position(pattern_map, cells):
     if(pattern in pattern_map):
         return pattern_map[pattern],2-pattern_map[pattern]
 
+def get_winning_position(cells,maps,symbol):
 
-def play(turn):
-
-    finished = False
-
-    my_symbol = turn.current()
-
-    # Next is their turn
-    turn.change()
-
-    their_symbol = turn.current()
-
-
-    print("Turn of:"+my_symbol)
-
-    print("Checking if I can win in this turn")
-    selected_cell = get_winning_position(my_symbol)
-    if(selected_cell):
-        print(my_symbol+" WON THE GAME!!! \n\n")
-        finished = True
-
-    if(not selected_cell):
-        print("Checking if they can win in next turn")
-        selected_cell = get_winning_position(their_symbol)
-        if(selected_cell):
-            print("Blocking them at position : "+str(selected_cell))
-
-    if(not selected_cell):
-        if(board.is_empty((1,1))):
-            print("Taking central cell")
-            selected_cell = (1,1)
-        else:
-            selected_cell = board.get_empty_corner()
-            print("Taking corner "+str(selected_cell))
-
-    if(not selected_cell):
-            print("Selecting random cell")
-            selected_cell = board.get_random_empty_cell()
-            print("Random cell "+str(selected_cell))
-
-    # Put the symbol and win
-    if(selected_cell):
-        board.mark_occupied(selected_cell,my_symbol)
-
-    return finished
-
-
-def get_winning_position(symbol):
-
-    pos = (get_next_matching_position(winnable_maps[symbol], board.cells))
+    pos = (get_next_matching_position(maps[symbol], cells))
     print("horizontal position : " + str(pos))
 
     if (not pos):
-        pos = get_next_matching_position(winnable_maps[symbol], board.cells.T)
+        pos = get_next_matching_position(maps[symbol], cells.T)
         if(pos):
             pos=pos[::-1] # Transpose back to get correct position
         print("verticle position : " + str(pos))
 
     if (not pos):
-        pos = get_next_matching_diagonal_position(winnable_maps[symbol], board.cells)
+        pos = get_next_matching_diagonal_position(maps[symbol], cells)
         print("Diagonal position : " + str(pos))
 
     return pos
 
-board = Board()
+class Game:
 
-board.print_board()
+    def __init__(self,player1,player2,board=Board()):
+        self.board = board
+        self.player1 = player1
+        self.player2 = player2
+        self.current_player = player1
 
-# init with a random initial value
-# board[np.random.randint(0,3),np.random.randint(0,3)] = "-"
+    def current_player(self):
+        self.current_player
 
-board.print_board()
+    def change_turn(self):
+        self.current_player = self.player1 if self.current_player == self.player2 else self.player1
+
+
+
 
 def play_game(mode="auto"):
+
+    board = Board()
+    # TODO First turn can be taken as input
     turn = Turn('O')
+    # TODO there would be two players
+    player = BotPlayer()
+
     for i in range(9):
         if(mode!="auto"):
             pass
-        if(play(turn)):
+        if(play(board,turn,player)):
             print("GAME OVER")
             print(board)
             break
         board.print_board()
 
+# TODO take input the types of two players : Bot, Random, Human
+#play_game(Game(BotPlayer(),BotPlayer()))
+
 play_game()
+
+# Bot,Random,Human
+
+
 
 
 

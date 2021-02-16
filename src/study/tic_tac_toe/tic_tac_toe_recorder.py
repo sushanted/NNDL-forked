@@ -30,6 +30,15 @@ class Board:
         self.cells[cell] = symbol
         self.empty_cells.remove(cell)
 
+    # TODO check if same as print_board
+    def __str__(self):
+        str = "\n"
+        for row in self.cells:
+            for column in row:
+                str = str + column + " "
+            str = str +"\n"
+
+    # TODO remove if __str__ works properly
     def print_board(self):
         print("")
         for row in self.cells:
@@ -79,25 +88,20 @@ winnable_maps = dict(O=winnable_map_O, X=winnable_map_X)
 
 
 
-def play(board,turn,player):
+def play(game):
 
-    my_symbol = turn.current()
+    my = game.current_player
+    their = game.another_player
+    print("Turn of:"+my.symbol)
 
-    # Next is their turn
-    turn.change()
-
-    their_symbol = turn.current()
-
-    print("Turn of:"+my_symbol)
-
-    selected_cell = player.select_next_cell(board,my_symbol, their_symbol)
+    selected_cell = my.select_next_cell(game.board,my.symbol, their.symbol)
 
     # Put the symbol and win
     if(selected_cell):
-        board.mark_occupied(selected_cell,my_symbol)
+        game.board.mark_occupied(selected_cell,my.symbol)
 
-    if(get_winning_position(board.cells,won_maps,my_symbol)):
-        print(my_symbol+ " INDEED WON THE GAME!!")
+    if(get_winning_position(game.board.cells,won_maps,my.symbol)):
+        print(my.symbol+ " INDEED WON THE GAME!!")
         return True
 
     return False
@@ -109,7 +113,10 @@ class Player:
        pass
 
 class RandomPlayer(Player):
-    pass
+    def select_next_cell(self, board, my_symbol, their_symbol):
+        selected_cell =  board.get_random_empty_cell()
+        print("Random player selected cell: "+str(selected_cell))
+        return selected_cell
 
 class BotPlayer(Player):
 
@@ -178,40 +185,37 @@ class Game:
 
     def __init__(self,player1,player2,board=Board()):
         self.board = board
+        # TODO remove is not used
         self.player1 = player1
         self.player2 = player2
+        # default assignment, the first player will always get an extra chance than the second
+        self.player1.symbol = 'X'
+        self.player2.symbol = 'O'
         self.current_player = player1
-
-    def current_player(self):
-        self.current_player
+        self.another_player = player2
 
     def change_turn(self):
-        self.current_player = self.player1 if self.current_player == self.player2 else self.player1
+        # swap current and another players
+        current_player = self.current_player
+        self.current_player = self.another_player
+        self.another_player = current_player
 
 
-
-
-def play_game(mode="auto"):
-
-    board = Board()
-    # TODO First turn can be taken as input
-    turn = Turn('O')
-    # TODO there would be two players
-    player = BotPlayer()
+def play_game(game):
 
     for i in range(9):
-        if(mode!="auto"):
-            pass
-        if(play(board,turn,player)):
+
+        if(play(game)):
             print("GAME OVER")
-            print(board)
+            game.board.print_board()
             break
-        board.print_board()
+        game.board.print_board()
+        game.change_turn()
 
 # TODO take input the types of two players : Bot, Random, Human
-#play_game(Game(BotPlayer(),BotPlayer()))
+play_game(Game(BotPlayer(),RandomPlayer()))
 
-play_game()
+
 
 # Bot,Random,Human
 

@@ -28,21 +28,6 @@ class Board:
             str = str +"\n"
         return str
 
-def get_input():
-    inp = input()
-
-    value = inp % 10
-    #print(value)
-    inp = inp / 10
-    y = inp % 10
-    #print(y)
-    x = inp / 10
-    #print(x)
-    return x-1,y-1,value*1.0
-
-def get_next_input():
-    inp = input()
-    return (inp/10,inp%10)
 
 #board = np.random.choice(['X','O','-'],size=(3,3))
 
@@ -88,6 +73,23 @@ class Player:
 
    def select_next_cell(self,board,my_symbol, their_symbol):
        pass
+
+class HumanPlayer(Player):
+    def select_next_cell(self, board, my_symbol, their_symbol):
+        print("Select cell:")
+        selected_cell = self.get_next_input()
+        while(not self.is_valid(board,selected_cell)):
+            print("Invalid value, select another cell:")
+            selected_cell = self.get_next_input()
+        print("Human player selected cell: "+str(selected_cell))
+        return selected_cell
+
+    def get_next_input(self):
+        inp = input()
+        return (inp / 10, inp % 10)
+
+    def is_valid(self,board,cell):
+        return cell[0]<3 and cell[1]<3 and board.is_empty(cell)
 
 class RandomPlayer(Player):
     def select_next_cell(self, board, my_symbol, their_symbol):
@@ -186,13 +188,15 @@ def play_game(game):
         print(game.board)
         game.change_turn()
 
+    if i==8:
+        print("GAME OVER WITH A DRAW")
+
+
 # TODO take input the types of two players : Bot, Random, Human
-play_game(Game(BotPlayer(),RandomPlayer()))
+play_game(Game(RandomPlayer(),HumanPlayer()))
 
 
 
-
-# Bot,Random,Human
 
 
 
